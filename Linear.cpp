@@ -1,6 +1,7 @@
 #include<iostream>
 #include<cmath>
 #include<string>
+#include <iomanip>
 using namespace std;
 int findLCM(int a, int b){
 	a = abs(a);
@@ -14,6 +15,7 @@ int findLCM(int a, int b){
             return i;
 }
 }
+
 class Fraction{
 	int numerator, denomerator;
 	public:
@@ -28,7 +30,8 @@ class Fraction{
 		void input(){
 			cin>>numerator;
 		}
-		void print(){
+		void print(){   
+		    cout<<setw(8);
 			cout<<numerator;
 		    if(denomerator ==1 || numerator == 0)
 		    cout<<" ";
@@ -51,17 +54,23 @@ class Fraction{
 			return denomerator;
 		}
 		void reduce(){
-			int limit = min(abs(numerator), abs(denomerator));
+			if(numerator == 0 || denomerator == 1)
+			return;
 			
+		   int a = abs(numerator), b = abs(denomerator), limit = findLCM(a,b); 
 			for(int i=2; i<=limit; i++){
-				if(numerator%i == 0 and denomerator%i == 0){
-					numerator /= i;
-					denomerator /=i;
+				if(a%i == 0 and b%i == 0){
+					a /= i;
+					b /=i;
+					--i;
 				}
 			}
-		if(denomerator < 0)
-			numerator = -numerator;
-			denomerator = abs(denomerator);
+			if((numerator <0 && denomerator>0) || (numerator>0 && denomerator<0))
+			numerator = -1*a;
+			else
+			numerator = a;
+			
+			denomerator = b;
 		}
 		Fraction operator+(Fraction& f){
 			int lcm = findLCM(denomerator, f.getDenom());
@@ -156,8 +165,9 @@ void echelon(int rows, int cols, Fraction** array){
 	
 	
 }
-int main(){
-	int no = 0;
+
+void start(){
+		int no = 0;
 	cout<<"Enter the number of variables: "<<endl;
 	cin>>no;
     Fraction** matrix = new Fraction*[no];
@@ -185,5 +195,10 @@ int main(){
     delete matrix[i];
     
     delete[] matrix;
+}
+int main(){
+  while(1){
+  	start();
+  }
     
 }
